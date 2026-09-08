@@ -1,0 +1,392 @@
+/* Reset e Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DejaVu Sans', 'Segoe UI', Arial, sans-serif;
+    background: #1a1a2e;
+    color: white;
+    min-height: 100vh;
+}
+
+#app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+/* Cabeçalho */
+header {
+    text-align: center;
+    padding: 15px 0;
+    border-bottom: 2px solid #e94560;
+    margin-bottom: 15px;
+}
+
+header h1 {
+    color: #e94560;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+}
+
+/* Layout Principal */
+main {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Sidebar */
+.sidebar {
+    background: #16213e;
+    padding: 15px;
+    border-radius: 8px;
+    min-width: 220px;
+    flex: 0 0 240px;
+    border: 1px solid #0f3460;
+}
+
+.sidebar h2 {
+    color: #e94560;
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+.status-edicao {
+    background: #2d1b3d;
+    padding: 6px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.status-edicao span {
+    color: #ffd700;
+}
+
+.btn-cancelar {
+    background: #e94560;
+    color: white;
+    border: none;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-cancelar:hover {
+    background: #c73a52;
+}
+
+/* Formulário */
+.campo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    gap: 6px;
+}
+
+.campo label {
+    width: 60px;
+    font-size: 0.8rem;
+    color: #ddd;
+    flex-shrink: 0;
+}
+
+.campo input {
+    flex: 1;
+    padding: 4px 6px;
+    border: none;
+    border-radius: 4px;
+    background: #0f3460;
+    color: white;
+    font-size: 0.8rem;
+    outline: none;
+    width: 80px;
+}
+
+.campo input:focus {
+    border: 1px solid #e94560;
+}
+
+.campo input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.campo input::-webkit-outer-spin-button,
+.campo input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+form button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-adicionar {
+    background: #e94560;
+    color: white;
+}
+
+.btn-adicionar:hover {
+    background: #c73a52;
+    transform: scale(1.02);
+}
+
+.btn-limpar {
+    background: #2d4059;
+    color: white;
+}
+
+.btn-limpar:hover {
+    background: #3d5575;
+}
+
+/* Tabela */
+.tabela-container {
+    flex: 1;
+    min-width: 300px;
+    background: #1a1a2e;
+}
+
+.tabela-wrapper {
+    background: #16213e;
+    border-radius: 8px;
+    overflow: auto;
+    max-height: 500px;
+    border: 1px solid #0f3460;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.7rem;
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+thead th {
+    background: #0f3460;
+    color: white;
+    padding: 8px 4px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+tbody tr {
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+tbody tr:hover {
+    background: #1a2a4a;
+}
+
+tbody tr.selecionado {
+    background: #e94560 !important;
+    color: white;
+}
+
+tbody td {
+    padding: 6px 4px;
+    text-align: center;
+    border-bottom: 1px solid #0f3460;
+    white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+    background: #1a1a2e;
+}
+
+tbody tr:nth-child(even):hover {
+    background: #1a2a4a;
+}
+
+/* Barra de Botões */
+.barra-botoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 8px 0;
+}
+
+.barra-botoes button {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 4px;
+    background: #0f3460;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.barra-botoes button:hover {
+    background: #1a4a7a;
+    transform: scale(1.02);
+}
+
+.barra-botoes .btn-danger {
+    background: #e94560;
+}
+
+.barra-botoes .btn-danger:hover {
+    background: #c73a52;
+}
+
+/* Status */
+.status {
+    padding: 6px 10px;
+    background: #16213e;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: #aaa;
+    text-align: center;
+    margin-top: 6px;
+}
+
+/* Modais */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-conteudo {
+    background: #16213e;
+    margin: 5% auto;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 600px;
+    position: relative;
+    border: 1px solid #e94560;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-grande .modal-conteudo {
+    max-width: 900px;
+}
+
+.modal-fechar {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #e94560;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-fechar:hover {
+    transform: scale(1.2);
+}
+
+.modal-conteudo h2 {
+    color: #e94560;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.modal-conteudo p, .modal-conteudo div {
+    color: #ddd;
+    font-size: 0.95rem;
+    padding: 4px 0;
+}
+
+#input-busca {
+    width: 70%;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background: #0f3460;
+    color: white;
+    font-size: 0.9rem;
+    margin-right: 8px;
+}
+
+#btn-buscar-executar {
+    padding: 8px 20px;
+    background: #e94560;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#busca-resultados {
+    margin-top: 12px;
+    background: #0f3460;
+    padding: 10px;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#busca-resultados p {
+    padding: 4px 0;
+    border-bottom: 1px solid #1a1a2e;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        flex: 1;
+        min-width: unset;
+    }
+    
+    .tabela-wrapper {
+        max-height: 300px;
+    }
+    
+    table {
+        font-size: 0.6rem;
+    }
+    
+    .modal-conteudo {
+        margin: 10% 10px;
+        padding: 15px;
+    }
+}
