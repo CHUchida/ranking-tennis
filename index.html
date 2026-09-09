@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 Ranking de Tênis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #1a1a2e;
+            color: white;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .titulo {
+            text-align: center;
+            color: #e94560;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .main-layout {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        /* Formulário */
+        .formulario {
+            background: #16213e;
+            padding: 20px;
+            border-radius: 10px;
+            flex: 0 0 280px;
+            border: 2px solid #0f3460;
+        }
+        
+        .formulario h2 {
+            color: #e94560;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .campo {
+            margin-bottom: 10px;
+        }
+        
+        .campo label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 3px;
+            color: #ccc;
+        }
+        
+        .campo input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #0f3460;
+            background: #0f3460;
+            color: white;
+            font-size: 13px;
+        }
+        
+        .campo input:focus {
+            outline: 2px solid #e94560;
+        }
+        
+        .botoes-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+            flex: 1;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: scale(1.02);
+        }
+        
+        .btn-adicionar {
+            background: #e94560;
+            color: white;
+        }
+        
+        .btn-limpar {
+            background: #2d4059;
+            color: white;
+        }
+        
+        /* Tabela */
+        .tabela-container {
+            flex: 1;
+            background: #16213e;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #0f3460;
+            overflow-x: auto;
+            min-width: 600px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        thead {
+            background: #0f3460;
+        }
+        
+        th {
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            border-bottom: 2px solid #e94560;
+        }
+        
+        td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid #0f3460;
+        }
+        
+        tr:hover {
+            background: #0f3460;
+            cursor: pointer;
+        }
+        
+        tr.selecionado {
+            background: #e94560 !important;
+        }
+        
+        /* Botões ações */
+        .botoes-acoes {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-acao {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+        
+        .btn-acao:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn-editar { background: #0f3460; color: white; }
+        .btn-remover { background: #e94560; color: white; }
+        .btn-reordenar { background: #0f3460; color: white; }
+        .btn-stats { background: #0f3460; color: white; }
+        .btn-top3 { background: #0f3460; color: white; }
+        .btn-buscar { background: #0f3460; color: white; }
+        
+        .status {
+            margin-top: 10px;
+            color: #aaa;
+            font-size: 13px;
+            text-align: center;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #16213e;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            border: 2px solid #e94560;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-content h2 {
+            color: #e94560;
+            margin-bottom: 15px;
+        }
+        
+        .modal-content p {
+            margin: 8px 0;
+            color: #ccc;
+        }
+        
+        .modal-fechar {
+            margin-top: 15px;
+            padding: 10px 30px;
+            background: #e94560;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .formulario {
+                flex: 1 1 100%;
+            }
+            .tabela-container {
+                min-width: auto;
+                flex: 1 1 100%;
+            }
+            .titulo {
+                font-size: 20px;
+            }
+            table {
+                font-size: 11px;
+            }
+            th, td {
+                padding: 6px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="titulo">🏆 GERENCIADOR DE RANKING DE TÊNIS</h1>
+        
+        <div class="main-layout">
+            <!-- Formulário -->
+            <div class="formulario">
+                <h2>📝 ADICIONAR JOGADOR</h2>
+                
+                <div class="campo">
+                    <label>Nome:</label>
+                    <input type="text" id="nome" placeholder="Ex: Alcaraz">
+                </div>
+                <div class="campo">
+                    <label>Vitórias (V):</label>
+                    <input type="number" id="v" value="0">
+                </div>
+                <div class="campo">
+                    <label>Derrotas (D):</label>
+                    <input type="number" id="d" value="0">
+                </div>
+                <div class="campo">
+                    <label>Pontos:</label>
+                    <input type="number" id="pontos" value="0">
+                </div>
+                <div class="campo">
+                    <label>Aces (média):</label>
+                    <input type="number" id="aces" value="0" step="0.1">
+                </div>
+                <div class="campo">
+                    <label>Duplas faltas:</label>
+                    <input type="number" id="duplas" value="0" step="0.1">
+                </div>
+                <div class="campo">
+                    <label>Quebras convertidas:</label>
+                    <input type="number" id="quebras" value="0" step="0.1">
+                </div>
+                <div class="campo">
+                    <label>% 1º Saque:</label>
+                    <input type="number" id="saque" value="0">
+                </div>
+                <div class="campo">
+                    <label>% Break Points Salvos:</label>
+                    <input type="number" id="salvos" value="0">
+                </div>
+                
+                <div class="botoes-form">
+                    <button class="btn btn-adicionar" onclick="adicionarJogador()">➕ ADICIONAR</button>
+                    <button class="btn btn-limpar" onclick="limparFormulario()">🗑️ LIMPAR</button>
+                </div>
+            </div>
+            
+            <!-- Tabela -->
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Jogador</th>
+                            <th>V</th>
+                            <th>D</th>
+                            <th>Pts</th>
+                            <th>Aces</th>
+                            <th>Dup</th>
+                            <th>Qub</th>
+                            <th>%Sq</th>
+                            <th>%Sv</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-corpo">
+                    </tbody>
+                </table>
+                
+                <div class="botoes-acoes">
+                    <button class="btn-acao btn-editar" onclick="editarJogador()">✏️ Editar</button>
+                    <button class="btn-acao btn-remover" onclick="removerJogador()">❌ Remover</button>
+                    <button class="btn-acao btn-reordenar" onclick="reordenar()">🔄 Reordenar</button>
+                    <button class="btn-acao btn-stats" onclick="verEstatisticas()">📊 Stats</button>
+                    <button class="btn-acao btn-top3" onclick="verTop3()">🏅 Top3</button>
+                    <button class="btn-acao btn-buscar" onclick="buscarJogador()">🔍 Buscar</button>
+                </div>
+                
+                <div class="status" id="status">✅ Preencha o formulário e clique em ADICIONAR</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2 id="modal-titulo">Detalhes</h2>
+            <div id="modal-corpo"></div>
+            <button class="modal-fechar" onclick="fecharModal()">Fechar</button>
+        </div>
+    </div>
+    
+    <script>
+        // Dados
+        let jogadores = [];
+        let selecionado = null;
+        
+        // Carregar dados do localStorage
+        function carregarDados() {
+            const dados = localStorage.getItem('jogadores_tenis');
+            if (dados) {
+                try {
+                    jogadores = JSON.parse(dados);
+                } catch(e) {
+                    jogadores = [];
+                }
+            }
+            atualizarTabela();
+        }
+        
+        // Salvar dados
+        function salvarDados() {
+            localStorage.setItem('jogadores_tenis', JSON.stringify(jogadores));
+        }
+        
+        // Adicionar jogador
+        function adicionarJogador() {
+            const nome = document.getElementById('nome').value.trim();
+            if (!nome) {
+                alert('⚠️ Nome do jogador é obrigatório!');
+                return;
+            }
+            
+            // Verificar duplicidade
+            if (jogadores.some(j => j.nome.toLowerCase() === nome.toLowerCase())) {
+                alert(`⚠️ Jogador "${nome}" já existe!`);
+                return;
+            }
+            
+            const jogador = {
+                nome: nome,
+                v: parseInt(document.getElementById('v').value) || 0,
+                d: parseInt(document.getElementById('d').value) || 0,
+                pontos: parseInt(document.getElementById('pontos').value) || 0,
+                aces: parseFloat(document.getElementById('aces').value) || 0,
+                duplas: parseFloat(document.getElementById('duplas').value) || 0,
+                quebras: parseFloat(document.getElementById('quebras').value) || 0,
+                saque: parseFloat(document.getElementById('saque').value) || 0,
+                salvos: parseFloat(document.getElementById('salvos').value) || 0
+            };
+            
+            jogadores.push(jogador);
+            salvarDados();
+            atualizarTabela();
+            limparFormulario();
+            document.getElementById('status').textContent = `✅ ${nome} adicionado com sucesso!`;
+        }
+        
+        // Limpar formulário
+        function limparFormulario() {
+            document.getElementById('nome').value = '';
+            document.getElementById('v').value = '0';
+            document.getElementById('d').value = '0';
+            document.getElementById('pontos').value = '0';
+            document.getElementById('aces').value = '0';
+            document.getElementById('duplas').value = '0';
+            document.getElementById('quebras').value = '0';
+            document.getElementById('saque').value = '0';
+            document.getElementById('salvos').value = '0';
+            selecionado = null;
+            document.querySelectorAll('tr').forEach(tr => tr.classList.remove('selecionado'));
+            document.getElementById('status').textContent = '🔄 Formulário limpo';
+        }
+        
+        // Atualizar tabela
+        function atualizarTabela() {
+            const tbody = document.getElementById('tabela-corpo');
+            tbody.innerHTML = '';
+            
+            // Ordenar por pontos
+            jogadores.sort((a, b) => b.pontos - a.pontos);
+            
+            if (jogadores.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:30px; color:#666;">📋 Nenhum jogador cadastrado</td></tr>';
+                document.getElementById('status').textContent = '📋 Nenhum jogador cadastrado';
+                return;
+            }
+            
+            jogadores.forEach((j, i) => {
+                const tr = document.createElement('tr');
+                tr.dataset.index = i;
+                tr.innerHTML = `
+                    <td>${i + 1}</td>
+                    <td>${j.nome}</td>
+                    <td>${j.v}</td>
+                    <td>${j.d}</td>
+                    <td>${j.pontos}</td>
+                    <td>${j.aces.toFixed(1)}</td>
+                    <td>${j.duplas.toFixed(1)}</td>
+                    <td>${j.quebras.toFixed(1)}</td>
+                    <td>${j.saque}%</td>
+                    <td>${j.salvos}%</td>
+                `;
+                tr.onclick = function() {
+                    document.querySelectorAll('tr').forEach(tr => tr.classList.remove('selecionado'));
+                    this.classList.add('selecionado');
+                    selecionado = parseInt(this.dataset.index);
+                    carregarParaEdicao(selecionado);
+                };
+                tbody.appendChild(tr);
+            });
+            
+            document.getElementById('status').textContent = `✅ Total: ${jogadores.length} jogadores`;
+        }
+        
+        // Carregar para edição
+        function carregarParaEdicao(index) {
+            const j = jogadores[index];
+            if (!j) return;
+            
+            document.getElementById('nome').value = j.nome;
+            document.getElementById('v').value = j.v;
+            document.getElementById('d').value = j.d;
+            document.getElementById('pontos').value = j.pontos;
+            document.getElementById('aces').value = j.aces;
+            document.getElementById('duplas').value = j.duplas;
+            document.getElementById('quebras').value = j.quebras;
+            document.getElementById('saque').value = j.saque;
+            document.getElementById('salvos').value = j.salvos;
+            
+            document.getElementById('status').textContent = `✏️ Editando: ${j.nome}`;
+        }
+        
+        // Editar jogador
+        function editarJogador() {
+            if (selecionado === null) {
+                alert('⚠️ Selecione um jogador na tabela!');
+                return;
+            }
+            
+            const nome = document.getElementById('nome').value.trim();
+            if (!nome) {
+                alert('⚠️ Nome é obrigatório!');
+                return;
+            }
+            
+            const nomeOriginal = jogadores[selecionado].nome;
+            if (nome.toLowerCase() !== nomeOriginal.toLowerCase()) {
+                if (jogadores.some(j => j.nome.toLowerCase() === nome.toLowerCase())) {
+                    alert(`⚠️ Jogador "${nome}" já existe!`);
+                    return;
+                }
+            }
+            
+            jogadores[selecionado] = {
+                nome: nome,
+                v: parseInt(document.getElementById('v').value) || 0,
+                d: parseInt(document.getElementById('d').value) || 0,
+                pontos: parseInt(document.getElementById('pontos').value) || 0,
+                aces: parseFloat(document.getElementById('aces').value) || 0,
+                duplas: parseFloat(document.getElementById('duplas').value) || 0,
+                quebras: parseFloat(document.getElementById('quebras').value) || 0,
+                saque: parseFloat(document.getElementById('saque').value) || 0,
+                salvos: parseFloat(document.getElementById('salvos').value) || 0
+            };
+            
+            salvarDados();
+            atualizarTabela();
+            limparFormulario();
+            document.getElementById('status').textContent = `✅ ${nome} atualizado com sucesso!`;
+        }
+        
+        // Remover jogador
+        function removerJogador() {
+            if (selecionado === null) {
+                alert('⚠️ Selecione um jogador na tabela!');
+                return;
+            }
+            
+            const nome = jogadores[selecionado].nome;
+            if (confirm(`Tem certeza que deseja remover ${nome}?`)) {
+                jogadores.splice(selecionado, 1);
+                salvarDados();
+                atualizarTabela();
+                limparFormulario();
+                document.getElementById('status').textContent = `❌ ${nome} removido`;
+            }
+        }
+        
+        // Reordenar
+        function reordenar() {
+            atualizarTabela();
+            alert('🔄 Ranking reordenado!');
+        }
+        
+        // Ver estatísticas
+        function verEstatisticas() {
+            if (jogadores.length === 0) {
+                alert('⚠️ Nenhum jogador cadastrado!');
+                return;
+            }
+            
+            const totalV = jogadores.reduce((s, j) => s + j.v, 0);
+            const totalD = jogadores.reduce((s, j) => s + j.d, 0);
+            const totalPts = jogadores.reduce((s, j) => s + j.pontos, 0);
+            const mediaPts = (totalPts / jogadores.length).toFixed(1);
+            const melhor = jogadores.reduce((a, b) => a.pontos > b.pontos ? a : b);
+            const maisVitorias = jogadores.reduce((a, b) => a.v > b.v ? a : b);
+            
+            const html = `
+                <p><strong>Jogadores:</strong> ${jogadores.length}</p>
+                <p><strong>Partidas:</strong> ${totalV + totalD}</p>
+                <p><strong>Vitórias:</strong> ${totalV}</p>
+                <p><strong>Derrotas:</strong> ${totalD}</p>
+                <p><strong>Média de pontos:</strong> ${mediaPts}</p>
+                <p><strong>Melhor pontuação:</strong> ${melhor.nome} (${melhor.pontos} pts)</p>
+                <p><strong>Mais vitórias:</strong> ${maisVitorias.nome} (${maisVitorias.v})</p>
+            `;
+            
+            abrirModal('📊 ESTATÍSTICAS GERAIS', html);
+        }
+        
+        // Ver Top 3
+        function verTop3() {
+            if (jogadores.length === 0) {
+                alert('⚠️ Nenhum jogador cadastrado!');
+                return;
+            }
+            
+            const top = [...jogadores].sort((a, b) => b.pontos - a.pontos).slice(0, 3);
+            let html = '<p style="font-size:20px; text-align:center;">🏅 TOP 3</p>';
+            top.forEach((j, i) => {
+                html += `
+                    <p style="margin:10px 0; padding:10px; background:#0f3460; border-radius:5px;">
+                        <strong>${i+1}º ${j.nome}</strong><br>
+                        Pontos: ${j.pontos} | V: ${j.v} | D: ${j.d}
+                    </p>
+                `;
+            });
+            
+            abrirModal('🏅 TOP 3 DO RANKING', html);
+        }
+        
+        // Buscar jogador
+        function buscarJogador() {
+            const nome = prompt('🔍 Digite o nome do jogador:');
+            if (!nome) return;
+            
+            const encontrados = jogadores.filter(j => 
+                j.nome.toLowerCase().includes(nome.toLowerCase())
+            );
+            
+            if (encontrados.length === 0) {
+                alert('❌ Nenhum jogador encontrado!');
+                return;
+            }
+            
+            let html = `<p style="margin-bottom:10px;">🔍 Encontrados ${encontrados.length} jogadores:</p>`;
+            encontrados.forEach(j => {
+                const pos = jogadores.indexOf(j) + 1;
+                html += `
+                    <p style="margin:5px 0; padding:5px; background:#0f3460; border-radius:5px;">
+                        ${pos}º ${j.nome} (${j.pontos} pts) - V: ${j.v} D: ${j.d}
+                    </p>
+                `;
+            });
+            
+            abrirModal('🔍 RESULTADO DA BUSCA', html);
+        }
+        
+        // Modal
+        function abrirModal(titulo, conteudo) {
+            document.getElementById('modal-titulo').textContent = titulo;
+            document.getElementById('modal-corpo').innerHTML = conteudo;
+            document.getElementById('modal').classList.add('active');
+        }
+        
+        function fecharModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+        
+        // Fechar modal clicando fora
+        document.getElementById('modal').onclick = function(e) {
+            if (e.target === this) fecharModal();
+        };
+        
+        // Inicializar
+        carregarDados();
+    </script>
+</body>
+</html>
